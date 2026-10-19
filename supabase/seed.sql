@@ -1,0 +1,1 @@
+-- Local-only sample data belongs here. Never store production user data or secrets.

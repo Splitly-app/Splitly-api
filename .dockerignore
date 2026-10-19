@@ -1,0 +1,8 @@
+.git
+node_modules
+dist
+coverage
+.env*
+supabase/.temp
+supabase/.branches
+*.log

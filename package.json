@@ -1,0 +1,33 @@
+{
+  "name": "@splitly/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --env-file=.env.local --watch src/server.ts",
+    "dev:container": "bun --watch src/server.ts",
+    "start": "bun src/server.ts",
+    "check": "bun run lint && bun run typecheck",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "build": "bun build src/server.ts --target bun --outdir dist",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset:local": "supabase db reset --local",
+    "db:test": "supabase test db"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "1.4.2",
+    "@elysia/openapi": "1.4.15",
+    "@sinclair/typebox": "0.34.52",
+    "@supabase/supabase-js": "2.118.0",
+    "elysia": "1.4.30"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@types/bun": "1.4.3",
+    "supabase": "2.121.0",
+    "typescript": "5.9.3"
+  }
+}
