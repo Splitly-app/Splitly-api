@@ -1,6 +1,8 @@
 import { openapi } from "@elysia/openapi";
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
+import { createRoomRoutes } from "./modules/rooms/routes";
+import type { RoomService } from "./modules/rooms/service";
 
 export type Identity = { id: string };
 export type AuthGateway = (token: string) => Promise<Identity | null>;
@@ -9,6 +11,7 @@ export function createApp(options: {
   allowedOrigins: string[];
   docsEnabled?: boolean;
   resolveUser: AuthGateway;
+  rooms?: RoomService;
   version: string;
   log?: (entry: Record<string, unknown>) => void;
 }) {
@@ -28,6 +31,20 @@ export function createApp(options: {
                 scheme: "bearer",
                 bearerFormat: "JWT",
               },
+              RoomToken: {
+                type: "apiKey",
+                in: "header",
+                name: "x-room-token",
+                description:
+                  "Room link token; anyone holding it can edit this room",
+              },
+              MemberToken: {
+                type: "apiKey",
+                in: "header",
+                name: "x-member-token",
+                description:
+                  "Selected member session token; required for expense mutations",
+              },
             },
           },
         },
@@ -37,7 +54,12 @@ export function createApp(options: {
       cors({
         origin: options.allowedOrigins,
         credentials: false,
-        allowedHeaders: ["authorization", "content-type"],
+        allowedHeaders: [
+          "authorization",
+          "content-type",
+          "x-room-token",
+          "x-member-token",
+        ],
         exposeHeaders: ["x-request-id"],
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       }),
@@ -59,6 +81,12 @@ export function createApp(options: {
       if (code === "NOT_FOUND") {
         set.status = 404;
         return { error: { code: "NOT_FOUND", message: "Route not found" } };
+      }
+      if (code === "VALIDATION") {
+        set.status = 422;
+        return {
+          error: { code: "VALIDATION_ERROR", message: "Invalid request" },
+        };
       }
       set.status = 500;
       return {
@@ -118,5 +146,6 @@ export function createApp(options: {
           },
         },
       },
-    );
+    )
+    .use(options.rooms ? createRoomRoutes(options.rooms) : new Elysia());
 }

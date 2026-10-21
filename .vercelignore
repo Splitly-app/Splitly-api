@@ -1,0 +1,10 @@
+.git/
+.github/
+.env*
+.vercel/
+node_modules/
+dist/
+coverage/
+supabase/
+*.log
+*.tsbuildinfo

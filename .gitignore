@@ -8,3 +8,4 @@ coverage/
 supabase/.temp/
 supabase/.branches/
 supabase/.env
+.vercel/

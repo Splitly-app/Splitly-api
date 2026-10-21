@@ -2,7 +2,13 @@
   "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/node_modules", "!dist", "!supabase/.temp"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!dist",
+      "!supabase/.temp",
+      "!.vercel"
+    ]
   },
   "formatter": { "enabled": true, "indentStyle": "space" },
   "linter": { "enabled": true },

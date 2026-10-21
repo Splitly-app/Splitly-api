@@ -27,6 +27,7 @@ export function readConfig(env: Record<string, string | undefined>) {
   return {
     supabaseUrl,
     supabaseKey,
+    supabaseSecretKey: env.SUPABASE_SECRET_KEY || undefined,
     allowedOrigins,
     port,
     host: env.HOST ?? "0.0.0.0",
